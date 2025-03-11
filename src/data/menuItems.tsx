@@ -1,4 +1,4 @@
-import { Grid, Package, Wrench, Layers, Briefcase, PlusSquare, Home, FileText } from "lucide-react";
+import { Grid, Package, Wrench, Layers, Briefcase, PlusSquare, Home, FileText, LogOut } from "lucide-react";
 
 const menuItems = [
   { name: "Dashboard", path: "/dashboard", icon: Grid },
@@ -9,6 +9,7 @@ const menuItems = [
   { name: "Request", path: "/request", icon: PlusSquare },
   { name: "On hand", path: "/on-hand", icon: Home },
   { name: "GRN Report", path: "/grn-report", icon: FileText },
+  { name: "Logout", path: "/logout", icon: LogOut, isLogout: true },
 ];
 
 export default menuItems;

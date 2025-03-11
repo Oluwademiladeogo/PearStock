@@ -1,9 +1,34 @@
+// filepath: /Users/thebickersteth/Desktop/projects/PearStock/src/App.tsx
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Sidebar from './components/SideBar/SideBar';
+import Dashboard from './components/pages/Dashboard';
+// import Items from './pages/Items';
+// import Tools from './pages/Tools';
+// import Assets from './pages/Assets';
+// import Project from './pages/Project';
+// import Request from './pages/Request';
+// import OnHand from './pages/OnHand';
+// import GRNReport from './pages/GRNReport';
+
 function App() {
   return (
-    <>
-      
-    </>
-  )
+    <div className="flex">
+      <Sidebar />
+      <div className="flex-1 p-4">
+        <Routes>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/items" element={<Dashboard />} />
+          <Route path="/tools" element={<Dashboard />} />
+          <Route path="/assets" element={<Dashboard />} />
+          <Route path="/project" element={<Dashboard />} />
+          <Route path="/request" element={<Dashboard />} />
+          <Route path="/on-hand" element={<Dashboard />} />
+          <Route path="/grn-report" element={<Dashboard />} />
+        </Routes>
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;

@@ -1,5 +1,3 @@
-// filepath: /Users/thebickersteth/Desktop/projects/PearStock/src/App.tsx
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from './components/SideBar/SideBar';
 import Dashboard from './components/pages/Dashboard';
@@ -10,6 +8,7 @@ import Dashboard from './components/pages/Dashboard';
 // import Request from './pages/Request';
 // import OnHand from './pages/OnHand';
 // import GRNReport from './pages/GRNReport';
+// import Logout from './pages/Logout';
 
 function App() {
   return (
@@ -25,6 +24,7 @@ function App() {
           <Route path="/request" element={<Dashboard />} />
           <Route path="/on-hand" element={<Dashboard />} />
           <Route path="/grn-report" element={<Dashboard />} />
+          <Route path="/logout" element={<Dashboard />} />
         </Routes>
       </div>
     </div>

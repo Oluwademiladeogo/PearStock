@@ -6,12 +6,18 @@ import Items from "./components/pages/Items";
 import Signup from "./components/pages/Signup";
 import Logout from "./components/pages/Logout";
 import Home from "./components/pages/home";
+import ForgotPassword from "./components/pages/ForgotPassword";
+import VerifyOtp from "./components/pages/VerifyOTP";
 // import Logout from './components/pages/Logout';
 
 function App() {
   const location = useLocation();
   const hideSidebar =
-    location.pathname === "/login" || location.pathname === "/logout";
+    location.pathname === "/login" ||
+    location.pathname === "/logout" ||
+    location.pathname === "/signup" ||
+    location.pathname === "/forgot-password" ||
+    location.pathname === "/verify-otp";
 
   return (
     <div className="flex">
@@ -24,6 +30,8 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/items" element={<Items />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/verify-otp" element={<VerifyOtp />} />
         </Routes>
       </div>
     </div>

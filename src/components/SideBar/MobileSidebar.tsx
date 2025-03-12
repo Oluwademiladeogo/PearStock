@@ -27,7 +27,6 @@ export default function MobileSidebar({ darkMode, setDarkMode }: SidebarProps) {
         )}
       </button>
 
-      {/* Dropdown Menu - Now appears below the button */}
       {isMobileMenuOpen && (
         <div
           className={`fixed top-16 right-4 z-40 rounded-lg shadow-xl overflow-hidden ${

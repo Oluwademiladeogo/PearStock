@@ -5,9 +5,9 @@ import Login from "./components/pages/login";
 import Products from "./components/pages/Products";
 import Signup from "./components/pages/Signup";
 import Logout from "./components/pages/Logout";
-import Home from "./components/pages/home";
+import Home from "./components/pages/Home";
 import ForgotPassword from "./components/pages/ForgotPassword";
-import VerifyOtp from "./components/pages/VerifyOTP";
+import VerifyOtp from "./components/pages/VerifyOtp";
 // import Logout from './components/pages/Logout';
 
 function App() {

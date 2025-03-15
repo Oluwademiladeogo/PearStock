@@ -28,7 +28,7 @@ export default function DesktopSidebar({ darkMode, setDarkMode }: SidebarProps) 
                   isActive
                     ? "bg-blue-300 text-blue-900 font-semibold"
                     : "hover:bg-blue-200"
-                } ${item.isLogout ? "mt-4 border-t pt-2" : ""}`
+                } ${item.isLogout ? "mt-4 pt-2" : ""}`
               }
             >
               <item.icon className="w-5 h-5" />

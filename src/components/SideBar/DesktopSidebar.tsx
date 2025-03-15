@@ -7,10 +7,10 @@ interface SidebarProps {
   setDarkMode: (value: boolean) => void;
 }
 
-export default function MobileSidebar({ darkMode, setDarkMode }: SidebarProps) {
+export default function DesktopSidebar({ darkMode, setDarkMode }: SidebarProps) {
   return (
     <div
-      className={`hidden md:flex h-screen w-64 p-4 flex-col justify-between transition-all ${
+      className={`hidden md:flex h-screen w-64 p-4 flex-col justify-between transition-all sticky top-0 ${
         darkMode ? "bg-blue-500 text-white" : "bg-blue-100 text-black"
       }`}
     >

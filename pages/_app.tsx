@@ -1,3 +1,4 @@
+import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import Sidebar from '../src/components/SideBar/SideBar';
 import { useRouter } from 'next/router';

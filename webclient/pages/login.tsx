@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-// import loginpic from "../public/loginpic.png";
 import Link from "next/link";
 const loginpic = "/loginpic.png";
 

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import loginpic from "../../assets/loginpic.png";
+import Image from "next/image"
+// import loginpic from "../public/loginpic.png";
+import Link from "next/link";
+const loginpic = "/loginpic.png";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -26,7 +29,7 @@ const Login: React.FC = () => {
   return (
     <div className="flex flex-col md:flex-row h-screen items-center justify-center bg-gray-100 p-4">
       <div className="hidden md:flex md:justify-center md:items-center md:w-auto lg:w-auto md:mr-8">
-        <img src={loginpic} alt="Login" className="rounded-lg max-w-full md:max-w-md lg:max-w-lg" />
+        <Image src={loginpic} alt="Login" className="rounded-lg max-w-full md:max-w-md lg:max-w-lg" />
       </div>
       <div className="w-full md:w-2/3 lg:w-1/3 bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold mb-4">
@@ -91,12 +94,12 @@ const Login: React.FC = () => {
             Login
           </button>
         </form>
-        <a
+        <Link
           href="/forgot-password"
           className="block text-right mt-4 text-sm text-blue-600 hover:underline"
         >
           Forgot Password?
-        </a>
+        </Link>
       </div>
     </div>
   );

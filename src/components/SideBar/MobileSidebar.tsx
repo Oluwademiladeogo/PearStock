@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { Moon, Sun, Menu, X } from "lucide-react";
-import menuItems from "../../data/menuItems";
+import menuItems from "../../../data/menuItems";
 
 interface SidebarProps {
   darkMode: boolean;
@@ -10,10 +11,10 @@ interface SidebarProps {
 
 export default function MobileSidebar({ darkMode, setDarkMode }: SidebarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <div className="md:hidden">
-      {/* Floating Menu Button - Now at top right */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         className={`fixed top-4 right-4 z-50 p-3 rounded-full shadow-lg ${
@@ -40,21 +41,19 @@ export default function MobileSidebar({ darkMode, setDarkMode }: SidebarProps) {
             </div>
             <nav className="space-y-1">
               {menuItems.map((item) => (
-                <NavLink
+                <Link
                   key={item.name}
-                  to={item.path}
-                  className={({ isActive }) =>
-                    `flex items-center space-x-2 p-2 rounded-lg transition-all ${
-                      isActive
-                        ? "bg-blue-300 text-blue-900 font-semibold"
-                        : "hover:bg-blue-200"
-                    } ${item.isLogout ? "mt-4 pt-2" : ""}`
-                  }
+                  href={item.path}
+                  className={`flex items-center space-x-2 p-2 rounded-lg transition-all ${
+                    router.pathname === item.path
+                      ? "bg-blue-300 text-blue-900 font-semibold"
+                      : "hover:bg-blue-200"
+                  } ${item.isLogout ? "mt-4 pt-2" : ""}`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <item.icon className="w-4 h-4" />
                   <span>{item.name}</span>
-                </NavLink>
+                </Link>
               ))}
             </nav>
             <div className="flex justify-start space-x-2 mt-4">

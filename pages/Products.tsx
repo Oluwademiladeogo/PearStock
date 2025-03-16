@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import productsData from "../../data/products.json";
+import productsData from "../data/products.json";
 
 interface Product {
   id: number;
@@ -53,7 +53,9 @@ const Products: React.FC = () => {
             className="px-4 py-2 border rounded-md w-1/3"
           />
           <div className="flex space-x-2">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-md">+ Add Item</button>
+            <button className="bg-blue-600 text-white px-4 py-2 rounded-md">
+              + Add Item
+            </button>
             <button className="bg-gray-200 px-4 py-2 rounded-md">Filter</button>
           </div>
         </div>
@@ -77,7 +79,11 @@ const Products: React.FC = () => {
               <tr key={product.id} className="hover:bg-gray-50">
                 <td className="px-4 py-2">{product.name}</td>
                 <td className="px-4 py-2">
-                  <img src={product.image} alt={product.name} className="w-12 h-12 rounded-md" />
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-12 h-12 rounded-md"
+                  />
                 </td>
                 <td className="px-4 py-2">{product.model}</td>
                 <td className="px-4 py-2">{product.type}</td>
@@ -91,11 +97,16 @@ const Products: React.FC = () => {
       </div>
 
       <div className="max-w-6xl mx-auto mt-6 flex justify-between items-center">
-        <p className="text-gray-600">Showing {indexOfFirstProduct + 1} to {indexOfLastProduct} out of {filteredProducts.length} records</p>
+        <p className="text-gray-600">
+          Showing {indexOfFirstProduct + 1} to {indexOfLastProduct} out of{" "}
+          {filteredProducts.length} records
+        </p>
         <div className="flex space-x-2">
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            className={`px-4 py-2 border rounded-md ${currentPage === 1 ? "text-gray-400" : "text-gray-700"}`}
+            className={`px-4 py-2 border rounded-md ${
+              currentPage === 1 ? "text-gray-400" : "text-gray-700"
+            }`}
             disabled={currentPage === 1}
           >
             &lt;
@@ -105,15 +116,21 @@ const Products: React.FC = () => {
               key={i}
               onClick={() => setCurrentPage(i + 1)}
               className={`px-4 py-2 border rounded-md ${
-                currentPage === i + 1 ? "bg-blue-600 text-white" : "bg-white text-gray-700"
+                currentPage === i + 1
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-gray-700"
               }`}
             >
               {i + 1}
             </button>
           ))}
           <button
-            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-            className={`px-4 py-2 border rounded-md ${currentPage === totalPages ? "text-gray-400" : "text-gray-700"}`}
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            className={`px-4 py-2 border rounded-md ${
+              currentPage === totalPages ? "text-gray-400" : "text-gray-700"
+            }`}
             disabled={currentPage === totalPages}
           >
             &gt;

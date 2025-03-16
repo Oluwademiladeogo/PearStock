@@ -1,13 +1,19 @@
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { Sun, Moon } from "lucide-react";
-import menuItems from "../../data/menuItems";
+import menuItems from "../../../data/menuItems";
 
 interface SidebarProps {
   darkMode: boolean;
   setDarkMode: (value: boolean) => void;
 }
 
-export default function DesktopSidebar({ darkMode, setDarkMode }: SidebarProps) {
+export default function DesktopSidebar({
+  darkMode,
+  setDarkMode,
+}: SidebarProps) {
+  const router = useRouter();
+
   return (
     <div
       className={`hidden md:flex h-screen w-64 p-4 flex-col justify-between transition-all sticky top-0 ${
@@ -20,20 +26,18 @@ export default function DesktopSidebar({ darkMode, setDarkMode }: SidebarProps) 
         </div>
         <nav className="space-y-2">
           {menuItems.map((item) => (
-            <NavLink
+            <Link
               key={item.name}
-              to={item.path}
-              className={({ isActive }) =>
-                `flex items-center space-x-2 p-2 rounded-lg transition-all ${
-                  isActive
-                    ? "bg-blue-300 text-blue-900 font-semibold"
-                    : "hover:bg-blue-200"
-                } ${item.isLogout ? "mt-4 pt-2" : ""}`
-              }
+              href={item.path}
+              className={`flex items-center space-x-2 p-2 rounded-lg transition-all ${
+                router.pathname === item.path
+                  ? "bg-blue-300 text-blue-900 font-semibold"
+                  : "hover:bg-blue-200"
+              } ${item.isLogout ? "mt-4 pt-2" : ""}`}
             >
               <item.icon className="w-5 h-5" />
               <span className="hidden sm:inline">{item.name}</span>
-            </NavLink>
+            </Link>
           ))}
         </nav>
       </div>

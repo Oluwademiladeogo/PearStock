@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Image from "next/image"
+import Image from "next/image";
 // import loginpic from "../public/loginpic.png";
 import Link from "next/link";
 const loginpic = "/loginpic.png";
@@ -25,14 +25,22 @@ const ForgotPassword: React.FC = () => {
   return (
     <div className="flex flex-col md:flex-row h-screen items-center justify-center bg-gray-100 p-4">
       <div className="hidden md:flex md:justify-center md:items-center md:w-auto lg:w-auto md:mr-8">
-        <Image src={loginpic} alt="Forgot Password" className="rounded-lg" style={{ maxWidth: '500px' }} />
+        <Image
+          src={loginpic}
+          alt="Forgot Password"
+          className="rounded-lg"
+          style={{ maxWidth: "500px" }}
+        />
       </div>
       <div className="w-full md:w-2/3 lg:w-1/3 bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold mb-4">Forgot Password</h1>
         <p className="mb-6">Enter your email to reset your password</p>
         <form onSubmit={handleForgotPassword}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email Address
             </label>
             <input
@@ -51,7 +59,10 @@ const ForgotPassword: React.FC = () => {
             Reset Password
           </button>
         </form>
-        <Link href="/login" className="block text-right mt-4 text-sm text-blue-600 hover:underline">
+        <Link
+          href="/login"
+          className="block text-right mt-4 text-sm text-blue-600 hover:underline"
+        >
           Back to Login
         </Link>
       </div>

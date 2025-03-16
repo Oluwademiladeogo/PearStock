@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Total Products",
+    "description": "You have 150 products in your inventory."
+  },
+  {
+    "title": "Sales Today",
+    "description": "You made 20 sales today."
+  },
+  {
+    "title": "Low Stock Items",
+    "description": "5 items are running low on stock."
+  }
+]

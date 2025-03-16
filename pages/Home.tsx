@@ -1,21 +1,27 @@
 import axios from "axios";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-const loading = true;
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+
 const Home: React.FC = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     axios
-      .get(`${import.meta.env.REACT_APP_API_URL}/api/home`)
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/api/home`)
       .then((response) => {
         const token = response.data?.token;
-        token ? navigate("/dashboard") : navigate("/login");
+        token ? router.push("/dashboard") : router.push("/login");
       })
       .catch((error) => {
         console.error(error);
-        navigate("/login");
+        router.push("/login");
+      })
+      .finally(() => {
+        setLoading(false);
       });
-  }, [navigate]);
+  }, [router]);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -23,6 +29,8 @@ const Home: React.FC = () => {
       </div>
     );
   }
+
   return null;
 };
+
 export default Home;

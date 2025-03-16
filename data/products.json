@@ -1,205 +1,204 @@
 {
-    "products": [
-      {
-        "id": 1,
-        "name": "Gas Kitting",
-        "model": "G-7893",
-        "type": "IE Project Items",
-        "store": "22 House Store",
-        "price": "$120",
-        "image": "https://example.com/images/gaskitting.jpg",
-        "stock": 10
-      },
-      {
-        "id": 2,
-        "name": "Condet",
-        "model": "Co-7898",
-        "type": "IE Project Items",
-        "store": "HQ Main Store",
-        "price": "$85",
-        "image": "https://example.com/images/condet.jpg",
-        "stock": 5
-      },
-      {
-        "id": 3,
-        "name": "Valve Regulator",
-        "model": "VR-1023",
-        "type": "Mechanical Equipment",
-        "store": "Warehouse 4",
-        "price": "$200",
-        "image": "https://example.com/images/valveregulator.jpg",
-        "stock": 15
-      },
-      {
-        "id": 4,
-        "name": "Pipe Fitting Set",
-        "model": "PF-3321",
-        "type": "Plumbing Items",
-        "store": "Supply Depot",
-        "price": "$50",
-        "image": "https://example.com/images/pipefitting.jpg",
-        "stock": 30
-      },
-      {
-        "id": 5,
-        "name": "Circuit Breaker",
-        "model": "CB-5587",
-        "type": "Electrical Components",
-        "store": "Electronics Hub",
-        "price": "$75",
-        "image": "https://example.com/images/circuitbreaker.jpg",
-        "stock": 20
-      },
-      {
-        "id": 6,
-        "name": "Industrial Fan",
-        "model": "IF-6722",
-        "type": "Cooling Equipment",
-        "store": "HQ Warehouse",
-        "price": "$150",
-        "image": "https://example.com/images/industrialfan.jpg",
-        "stock": 12
-      },
-      {
-        "id": 7,
-        "name": "Hydraulic Pump",
-        "model": "HP-9876",
-        "type": "Mechanical Equipment",
-        "store": "Machine Room",
-        "price": "$350",
-        "image": "https://example.com/images/hydraulicpump.jpg",
-        "stock": 8
-      },
-      {
-        "id": 8,
-        "name": "Solar Panel Kit",
-        "model": "SPK-4411",
-        "type": "Renewable Energy",
-        "store": "Green Energy Section",
-        "price": "$500",
-        "image": "https://example.com/images/solarpanelkit.jpg",
-        "stock": 7
-      },
-      {
-        "id": 9,
-        "name": "Safety Helmet",
-        "model": "SH-2233",
-        "type": "Safety Gear",
-        "store": "Equipment Safety",
-        "price": "$40",
-        "image": "https://example.com/images/safetyhelmet.jpg",
-        "stock": 50
-      },
-      {
-        "id": 10,
-        "name": "Power Drill",
-        "model": "PD-8921",
-        "type": "Hand Tools",
-        "store": "Tools Section",
-        "price": "$90",
-        "image": "https://example.com/images/powerdrill.jpg",
-        "stock": 18
-      },
-      {
-        "id": 11,
-        "name": "Welding Machine",
-        "model": "WM-1145",
-        "type": "Heavy Equipment",
-        "store": "Manufacturing Unit",
-        "price": "$600",
-        "image": "https://example.com/images/weldingmachine.jpg",
-        "stock": 6
-      },
-      {
-        "id": 12,
-        "name": "Concrete Mixer",
-        "model": "CM-7754",
-        "type": "Construction Equipment",
-        "store": "Building Supplies",
-        "price": "$1,200",
-        "image": "https://example.com/images/concretemixer.jpg",
-        "stock": 4
-      },
-      {
-        "id": 13,
-        "name": "Angle Grinder",
-        "model": "AG-5610",
-        "type": "Hand Tools",
-        "store": "Tools Section",
-        "price": "$110",
-        "image": "https://example.com/images/anglegrinder.jpg",
-        "stock": 22
-      },
-      {
-        "id": 14,
-        "name": "Extension Cord",
-        "model": "EC-9987",
-        "type": "Electrical Accessories",
-        "store": "Electronics Hub",
-        "price": "$25",
-        "image": "https://example.com/images/extensioncord.jpg",
-        "stock": 100
-      },
-      {
-        "id": 15,
-        "name": "LED Floodlight",
-        "model": "LF-3342",
-        "type": "Lighting Equipment",
-        "store": "Lighting Section",
-        "price": "$80",
-        "image": "https://example.com/images/ledfloodlight.jpg",
-        "stock": 14
-      },
-      {
-        "id": 16,
-        "name": "Work Gloves",
-        "model": "WG-2234",
-        "type": "Safety Gear",
-        "store": "Equipment Safety",
-        "price": "$15",
-        "image": "https://example.com/images/workgloves.jpg",
-        "stock": 75
-      },
-      {
-        "id": 17,
-        "name": "Multi-Meter",
-        "model": "MM-5567",
-        "type": "Electrical Tools",
-        "store": "Testing Equipment",
-        "price": "$55",
-        "image": "https://example.com/images/multimeter.jpg",
-        "stock": 20
-      },
-      {
-        "id": 18,
-        "name": "Torque Wrench",
-        "model": "TW-8821",
-        "type": "Mechanical Tools",
-        "store": "Tools Section",
-        "price": "$95",
-        "image": "https://example.com/images/torquewrench.jpg",
-        "stock": 12
-      },
-      {
-        "id": 19,
-        "name": "Ladder",
-        "model": "LD-7732",
-        "type": "Construction Equipment",
-        "store": "Building Supplies",
-        "price": "$180",
-        "image": "https://example.com/images/ladder.jpg",
-        "stock": 9
-      },
-      {
-        "id": 20,
-        "name": "Fire Extinguisher",
-        "model": "FE-9923",
-        "type": "Safety Equipment",
-        "store": "Equipment Safety",
-        "price": "$65",
-        "image": "https://example.com/images/fireextinguisher.jpg",
-        "stock": 30
-      }
-    ]
-  }
-  
+  "products": [
+    {
+      "id": 1,
+      "name": "Gas Kitting",
+      "model": "G-7893",
+      "type": "IE Project Items",
+      "store": "22 House Store",
+      "price": "$120",
+      "image": "https://example.com/images/gaskitting.jpg",
+      "stock": 10
+    },
+    {
+      "id": 2,
+      "name": "Condet",
+      "model": "Co-7898",
+      "type": "IE Project Items",
+      "store": "HQ Main Store",
+      "price": "$85",
+      "image": "https://example.com/images/condet.jpg",
+      "stock": 5
+    },
+    {
+      "id": 3,
+      "name": "Valve Regulator",
+      "model": "VR-1023",
+      "type": "Mechanical Equipment",
+      "store": "Warehouse 4",
+      "price": "$200",
+      "image": "https://example.com/images/valveregulator.jpg",
+      "stock": 15
+    },
+    {
+      "id": 4,
+      "name": "Pipe Fitting Set",
+      "model": "PF-3321",
+      "type": "Plumbing Items",
+      "store": "Supply Depot",
+      "price": "$50",
+      "image": "https://example.com/images/pipefitting.jpg",
+      "stock": 30
+    },
+    {
+      "id": 5,
+      "name": "Circuit Breaker",
+      "model": "CB-5587",
+      "type": "Electrical Components",
+      "store": "Electronics Hub",
+      "price": "$75",
+      "image": "https://example.com/images/circuitbreaker.jpg",
+      "stock": 20
+    },
+    {
+      "id": 6,
+      "name": "Industrial Fan",
+      "model": "IF-6722",
+      "type": "Cooling Equipment",
+      "store": "HQ Warehouse",
+      "price": "$150",
+      "image": "https://example.com/images/industrialfan.jpg",
+      "stock": 12
+    },
+    {
+      "id": 7,
+      "name": "Hydraulic Pump",
+      "model": "HP-9876",
+      "type": "Mechanical Equipment",
+      "store": "Machine Room",
+      "price": "$350",
+      "image": "https://example.com/images/hydraulicpump.jpg",
+      "stock": 8
+    },
+    {
+      "id": 8,
+      "name": "Solar Panel Kit",
+      "model": "SPK-4411",
+      "type": "Renewable Energy",
+      "store": "Green Energy Section",
+      "price": "$500",
+      "image": "https://example.com/images/solarpanelkit.jpg",
+      "stock": 7
+    },
+    {
+      "id": 9,
+      "name": "Safety Helmet",
+      "model": "SH-2233",
+      "type": "Safety Gear",
+      "store": "Equipment Safety",
+      "price": "$40",
+      "image": "https://example.com/images/safetyhelmet.jpg",
+      "stock": 50
+    },
+    {
+      "id": 10,
+      "name": "Power Drill",
+      "model": "PD-8921",
+      "type": "Hand Tools",
+      "store": "Tools Section",
+      "price": "$90",
+      "image": "https://example.com/images/powerdrill.jpg",
+      "stock": 18
+    },
+    {
+      "id": 11,
+      "name": "Welding Machine",
+      "model": "WM-1145",
+      "type": "Heavy Equipment",
+      "store": "Manufacturing Unit",
+      "price": "$600",
+      "image": "https://example.com/images/weldingmachine.jpg",
+      "stock": 6
+    },
+    {
+      "id": 12,
+      "name": "Concrete Mixer",
+      "model": "CM-7754",
+      "type": "Construction Equipment",
+      "store": "Building Supplies",
+      "price": "$1,200",
+      "image": "https://example.com/images/concretemixer.jpg",
+      "stock": 4
+    },
+    {
+      "id": 13,
+      "name": "Angle Grinder",
+      "model": "AG-5610",
+      "type": "Hand Tools",
+      "store": "Tools Section",
+      "price": "$110",
+      "image": "https://example.com/images/anglegrinder.jpg",
+      "stock": 22
+    },
+    {
+      "id": 14,
+      "name": "Extension Cord",
+      "model": "EC-9987",
+      "type": "Electrical Accessories",
+      "store": "Electronics Hub",
+      "price": "$25",
+      "image": "https://example.com/images/extensioncord.jpg",
+      "stock": 100
+    },
+    {
+      "id": 15,
+      "name": "LED Floodlight",
+      "model": "LF-3342",
+      "type": "Lighting Equipment",
+      "store": "Lighting Section",
+      "price": "$80",
+      "image": "https://example.com/images/ledfloodlight.jpg",
+      "stock": 14
+    },
+    {
+      "id": 16,
+      "name": "Work Gloves",
+      "model": "WG-2234",
+      "type": "Safety Gear",
+      "store": "Equipment Safety",
+      "price": "$15",
+      "image": "https://example.com/images/workgloves.jpg",
+      "stock": 75
+    },
+    {
+      "id": 17,
+      "name": "Multi-Meter",
+      "model": "MM-5567",
+      "type": "Electrical Tools",
+      "store": "Testing Equipment",
+      "price": "$55",
+      "image": "https://example.com/images/multimeter.jpg",
+      "stock": 20
+    },
+    {
+      "id": 18,
+      "name": "Torque Wrench",
+      "model": "TW-8821",
+      "type": "Mechanical Tools",
+      "store": "Tools Section",
+      "price": "$95",
+      "image": "https://example.com/images/torquewrench.jpg",
+      "stock": 12
+    },
+    {
+      "id": 19,
+      "name": "Ladder",
+      "model": "LD-7732",
+      "type": "Construction Equipment",
+      "store": "Building Supplies",
+      "price": "$180",
+      "image": "https://example.com/images/ladder.jpg",
+      "stock": 9
+    },
+    {
+      "id": 20,
+      "name": "Fire Extinguisher",
+      "model": "FE-9923",
+      "type": "Safety Equipment",
+      "store": "Equipment Safety",
+      "price": "$65",
+      "image": "https://example.com/images/fireextinguisher.jpg",
+      "stock": 30
+    }
+  ]
+}

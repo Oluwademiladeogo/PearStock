@@ -87,9 +87,33 @@ class ProductViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Products.objects.all()
         search = self.request.query_params.get('search', None)
+        type_filter = self.request.query_params.get('type', None)
+        store_filter = self.request.query_params.get('store', None)
+        
         if search:
             queryset = queryset.filter(name__icontains=search)
+        if type_filter:
+            queryset = queryset.filter(type=type_filter)
+        if store_filter:
+            queryset = queryset.filter(store=store_filter)
+            
         return queryset
+    
+    def perform_create(self, serializer):
+        serializer.save()
+        
+    def perform_update(self, serializer):
+        serializer.save()
+        
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+        
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
 @permission_classes([AllowAny])

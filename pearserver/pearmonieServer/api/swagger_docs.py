@@ -2,15 +2,8 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from .serializers import UserSerializer, ProductSerializer
 
-security_token = openapi.SecurityScheme(
-    type=openapi.TYPE_API_KEY,
-    name='Authorization',
-    in_=openapi.IN_HEADER,
-    description='Token <your_token>',
-)
-
 security_requirement = {
-    'TokenAuth': []  # 
+    'TokenAuth': []   
 }
 
 token_param = openapi.Parameter(

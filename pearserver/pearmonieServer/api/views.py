@@ -6,22 +6,14 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from .serializers import UserSerializer, ProductSerializer
 from pearmonieServer.models import Products
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-
-@swagger_auto_schema(
-    method='post',
-    request_body=openapi.Schema(
-        type=openapi.TYPE_OBJECT,
-        properties={
-            'email': openapi.Schema(type=openapi.TYPE_STRING, description='Email address'),
-            'password': openapi.Schema(type=openapi.TYPE_STRING, description='Password'),
-        }
-    ),
-    responses={200: 'Token and user data', 401: 'Invalid credentials'}
+from .swagger_docs import (
+    login_docs, signup_docs, forgot_password_docs, verify_otp_docs,
+    logout_docs, dashboard_docs, product_list_docs
 )
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@login_docs
 def login(request):
     email = request.data.get('email')
     password = request.data.get('password')
@@ -38,13 +30,9 @@ def login(request):
         status=status.HTTP_401_UNAUTHORIZED
     )
 
-@swagger_auto_schema(
-    method='post',
-    request_body=UserSerializer,
-    responses={201: 'Token and user data', 400: 'Bad request'}
-)
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@signup_docs
 def signup(request):
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
@@ -56,56 +44,32 @@ def signup(request):
         }, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@swagger_auto_schema(
-    method='post',
-    request_body=openapi.Schema(
-        type=openapi.TYPE_OBJECT,
-        properties={
-            'email': openapi.Schema(type=openapi.TYPE_STRING, description='Email address'),
-        }
-    ),
-    responses={200: 'Reset email sent'}
-)
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@forgot_password_docs
 def forgot_password(request):
     email = request.data.get('email')
     # Implement password reset logic here
     return Response({'message': 'Reset email sent'})
 
-@swagger_auto_schema(
-    method='post',
-    request_body=openapi.Schema(
-        type=openapi.TYPE_OBJECT,
-        properties={
-            'otp': openapi.Schema(type=openapi.TYPE_STRING, description='OTP code'),
-        }
-    ),
-    responses={200: 'OTP verified'}
-)
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@verify_otp_docs
 def verify_otp(request):
     otp = request.data.get('otp')
     # Implement OTP verification logic here
     return Response({'message': 'OTP verified'})
 
-@swagger_auto_schema(
-    method='post',
-    responses={200: 'Logged out successfully'}
-)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@logout_docs
 def logout(request):
     request.user.auth_token.delete()
     return Response({'message': 'Logged out successfully'})
 
-@swagger_auto_schema(
-    method='get',
-    responses={200: 'Dashboard statistics'}
-)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@dashboard_docs
 def dashboard(request):
     total_products = Products.objects.count()
     low_stock_items = Products.objects.filter(stock__lt=10).count()
@@ -119,10 +83,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(
-        operation_description="Retrieve a list of products",
-        responses={200: ProductSerializer(many=True)}
-    )
+    @product_list_docs
     def get_queryset(self):
         queryset = Products.objects.all()
         search = self.request.query_params.get('search', None)

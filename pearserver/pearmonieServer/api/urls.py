@@ -12,5 +12,6 @@ urlpatterns = [
     path('verify-otp/', views.verify_otp, name='verify-otp'),
     path('logout/', views.logout, name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('home/', views.home, name='home'),
     path('', include(router.urls)),
 ]

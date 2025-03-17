@@ -8,7 +8,7 @@ from .serializers import UserSerializer, ProductSerializer
 from pearmonieServer.models import Products
 from .swagger_docs import (
     login_docs, signup_docs, forgot_password_docs, verify_otp_docs,
-    logout_docs, dashboard_docs, product_list_docs
+    logout_docs, dashboard_docs, product_list_docs, home_docs
 )
 
 @api_view(['POST'])
@@ -90,3 +90,26 @@ class ProductViewSet(viewsets.ModelViewSet):
         if search:
             queryset = queryset.filter(name__icontains=search)
         return queryset
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+@home_docs
+def home(request):
+    """Check if user is authenticated based on token in header"""
+    auth_header = request.META.get('HTTP_AUTHORIZATION', '')
+    if (auth_header.startswith('Token ')):
+        token_key = auth_header.split(' ')[1]
+        try:
+            token = Token.objects.get(key=token_key)
+            user = token.user
+            return Response({
+                'authenticated': True,
+                'token': token_key,
+                'user': UserSerializer(user).data
+            })
+        except Token.DoesNotExist:
+            pass
+    
+    return Response({
+        'authenticated': False
+    })

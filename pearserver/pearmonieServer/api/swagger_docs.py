@@ -74,3 +74,21 @@ product_list_docs = swagger_auto_schema(
     security=[security_requirement],  
     responses={200: ProductSerializer(many=True)}
 )
+
+home_docs = swagger_auto_schema(
+    operation_description="Check if user is authenticated based on token in header",
+    manual_parameters=[token_param],
+    responses={
+        200: openapi.Response(
+            description="Authentication status",
+            schema=openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'authenticated': openapi.Schema(type=openapi.TYPE_BOOLEAN),
+                    'token': openapi.Schema(type=openapi.TYPE_STRING),
+                    'user': UserSerializer,
+                }
+            )
+        )
+    }
+)

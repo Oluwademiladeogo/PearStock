@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
+from .managers import CustomUserManager 
 from phonenumber_field.modelfields import PhoneNumberField  
 from django.core.validators import MinValueValidator
 
@@ -11,11 +13,12 @@ class CustomUser(AbstractUser):
     state_province = models.CharField(max_length=100, blank=True, null=True)
     postal_code = models.CharField(max_length=20, blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
-
+    date_joined = models.DateTimeField(auto_now_add=True) 
+    
     username = None 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = [] 
-
+    objects = CustomUserManager()
     def __str__(self):
         return self.email
     
@@ -33,6 +36,7 @@ class Products(models.Model):
     )
     image = models.TextField(max_length=100, blank=False, null=False)
     stock = models.PositiveIntegerField(validators=[MinValueValidator(1)], blank=False, null=False)
-    
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.name

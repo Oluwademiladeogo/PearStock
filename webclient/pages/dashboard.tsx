@@ -1,13 +1,19 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import dashboardData from "../data/dashboardData.json";
+import axios from "axios";
 
 const Dashboard = () => {
   const [data, setData] = useState<any[]>([]);
 
   useEffect(() => {
-    // Simulate fetching data from an API
-    setData(dashboardData);
+    axios
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/`)
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching dashboard data:", error);
+      });
   }, []);
 
   return (

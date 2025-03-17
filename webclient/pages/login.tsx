@@ -12,7 +12,7 @@ const Login: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/login", {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/login/`, {
         email,
         password,
         rememberMe,

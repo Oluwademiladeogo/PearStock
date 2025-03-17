@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import productsData from "../data/products.json";
+import axios from "axios";
 
 interface Product {
   id: number;
@@ -19,7 +19,14 @@ const Products: React.FC = () => {
   const [productsPerPage] = useState(10);
 
   useEffect(() => {
-    setProducts(productsData.products || []);
+    axios
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/api/products/`)
+      .then((response) => {
+        setProducts(response.data.products || []);
+      })
+      .catch((error) => {
+        console.error("Error fetching products data:", error);
+      });
   }, []);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,14 +34,14 @@ const Products: React.FC = () => {
   };
 
   const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(search.toLowerCase()),
+    product.name.toLowerCase().includes(search.toLowerCase())
   );
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(
     indexOfFirstProduct,
-    indexOfLastProduct,
+    indexOfLastProduct
   );
 
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);

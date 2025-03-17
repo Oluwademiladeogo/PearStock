@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-// import loginpic from "../public/loginpic.png";
 import Link from "next/link";
 const loginpic = "/loginpic.png";
 
@@ -11,9 +10,12 @@ const ForgotPassword: React.FC = () => {
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/forgot-password", {
-        email,
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/forgot-password/`,
+        {
+          email,
+        }
+      );
       console.log(response.data);
       // Handle successful submission
     } catch (error) {

@@ -14,7 +14,7 @@ const Signup: React.FC = () => {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/signup", {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/products/`, {
         name,
         email,
         password,

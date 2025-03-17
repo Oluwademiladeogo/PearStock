@@ -8,7 +8,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.NEXT_PUBLIC_API_URL}/api/home`)
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/api/home/`)
       .then((response) => {
         const token = response.data?.token;
         token ? router.push("/dashboard") : router.push("/login");

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-// import loginpic from "../public/loginpic.png";
 import Link from "next/link";
 const loginpic = "/loginpic.png";
 const VerifyOtp: React.FC = () => {
@@ -10,7 +9,7 @@ const VerifyOtp: React.FC = () => {
   const handleOTPVerification = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/verify-otp", {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/verify-otp/`, {
         otp,
       });
       console.log(response.data);

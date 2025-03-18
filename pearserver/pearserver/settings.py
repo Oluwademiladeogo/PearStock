@@ -130,3 +130,27 @@ REST_FRAMEWORK = {
 #     SECURE_CONTENT_TYPE_NOSNIFF = (
 #         os.getenv("SECURE_CONTENT_TYPE_NOSNIFF", "True").lower() == "true"
 #     )
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": "debug.log",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["file"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+        "pearmonieServer": {
+            "handlers": ["file"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
+}

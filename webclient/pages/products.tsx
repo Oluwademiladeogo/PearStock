@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useRouter } from "next/router";
+import { useProtectedRoute } from "../hooks/useProtectedRoute";
+import LoadingSpinner from "../components/LoadingSpinner";
+import api from "../utils/api";
 
 interface Product {
   id: number;
@@ -13,21 +16,42 @@ interface Product {
 }
 
 const Products: React.FC = () => {
+  const router = useRouter();
+  const { hydrated, isAuthenticated } = useProtectedRoute();
+
   const [products, setProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(10);
+  const productsPerPage = 10;
 
   useEffect(() => {
-    axios
-      .get(`${process.env.NEXT_PUBLIC_API_URL}/api/products/`)
-      .then((response) => {
-        setProducts(response.data.products || []);
-      })
-      .catch((error) => {
+    let isMounted = true;
+
+    const fetchProducts = async () => {
+      try {
+        const response = await api.get("/api/products/");
+        if (isMounted) {
+          setProducts(response.data.products || []);
+        }
+      } catch (error) {
         console.error("Error fetching products data:", error);
-      });
-  }, []);
+      }
+    };
+
+    if (isAuthenticated) {
+      fetchProducts();
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isAuthenticated]);
+
+  if (!hydrated) return <LoadingSpinner />;
+  if (!isAuthenticated) {
+    router.replace("/login");
+    return null;
+  }
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -43,14 +67,13 @@ const Products: React.FC = () => {
     indexOfFirstProduct,
     indexOfLastProduct
   );
-
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow">
         <h1 className="text-2xl font-bold">All Items</h1>
-        <p className="text-gray-600">Items detail Information</p>
+        <p className="text-gray-600">Items detail information</p>
         <div className="flex justify-between items-center mt-4">
           <input
             type="text"
@@ -71,7 +94,7 @@ const Products: React.FC = () => {
       <div className="max-w-6xl mx-auto bg-white rounded-lg shadow mt-6">
         <table className="min-w-full table-auto">
           <thead>
-            <tr className="border-b bg-gray-10">
+            <tr className="border-b bg-gray-100">
               <th className="px-4 py-2">Item Name</th>
               <th className="px-4 py-2">Image</th>
               <th className="px-4 py-2">Model</th>
@@ -82,68 +105,81 @@ const Products: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {currentProducts.map((product) => (
-              <tr key={product.id} className="hover:bg-gray-50">
-                <td className="px-4 py-2">{product.name}</td>
-                <td className="px-4 py-2">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-12 h-12 rounded-md"
-                  />
+            {currentProducts.length > 0 ? (
+              currentProducts.map((product) => (
+                <tr key={product.id} className="hover:bg-gray-50">
+                  <td className="px-4 py-2">{product.name}</td>
+                  <td className="px-4 py-2">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-12 h-12 rounded-md"
+                    />
+                  </td>
+                  <td className="px-4 py-2">{product.model}</td>
+                  <td className="px-4 py-2">{product.type}</td>
+                  <td className="px-4 py-2">{product.store}</td>
+                  <td className="px-4 py-2">{product.price}</td>
+                  <td className="px-4 py-2">{product.stock}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={7} className="text-center py-4">
+                  No products to display.
+                  <button className="bg-blue-600 text-white px-4 py-2 rounded-md ml-4">
+                    + Add Item
+                  </button>
                 </td>
-                <td className="px-4 py-2">{product.model}</td>
-                <td className="px-4 py-2">{product.type}</td>
-                <td className="px-4 py-2">{product.store}</td>
-                <td className="px-4 py-2">{product.price}</td>
-                <td className="px-4 py-2">{product.stock}</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
 
-      <div className="max-w-6xl mx-auto mt-6 flex justify-between items-center">
-        <p className="text-gray-600">
-          Showing {indexOfFirstProduct + 1} to {indexOfLastProduct} out of{" "}
-          {filteredProducts.length} records
-        </p>
-        <div className="flex space-x-2">
-          <button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            className={`px-4 py-2 border rounded-md ${
-              currentPage === 1 ? "text-gray-400" : "text-gray-700"
-            }`}
-            disabled={currentPage === 1}
-          >
-            &lt;
-          </button>
-          {Array.from({ length: totalPages }, (_, i) => (
+      {currentProducts.length > 0 && (
+        <div className="max-w-6xl mx-auto mt-6 flex justify-between items-center">
+          <p className="text-gray-600">
+            Showing {indexOfFirstProduct + 1} to {indexOfLastProduct} out of{" "}
+            {filteredProducts.length} records
+          </p>
+          <div className="flex space-x-2">
             <button
-              key={i}
-              onClick={() => setCurrentPage(i + 1)}
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               className={`px-4 py-2 border rounded-md ${
-                currentPage === i + 1
-                  ? "bg-blue-600 text-white"
-                  : "bg-white text-gray-700"
+                currentPage === 1 ? "text-gray-400" : "text-gray-700"
               }`}
+              disabled={currentPage === 1}
             >
-              {i + 1}
+              &lt;
             </button>
-          ))}
-          <button
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
-            className={`px-4 py-2 border rounded-md ${
-              currentPage === totalPages ? "text-gray-400" : "text-gray-700"
-            }`}
-            disabled={currentPage === totalPages}
-          >
-            &gt;
-          </button>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentPage(i + 1)}
+                className={`px-4 py-2 border rounded-md ${
+                  currentPage === i + 1
+                    ? "bg-blue-600 text-white"
+                    : "bg-white text-gray-700"
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              className={`px-4 py-2 border rounded-md ${
+                currentPage === totalPages ? "text-gray-400" : "text-gray-700"
+              }`}
+              disabled={currentPage === totalPages}
+            >
+              &gt;
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

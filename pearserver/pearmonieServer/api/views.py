@@ -36,7 +36,7 @@ def login(request):
         return Response({"token": token.key, "user": UserSerializer(user).data})
     else:
         try:
-            user_instance = User.objects.get(email=email)
+            User.objects.get(email=email)
             return Response(
                 {"error": "Incorrect password"}, status=status.HTTP_401_UNAUTHORIZED
             )
@@ -97,11 +97,11 @@ def verify_otp(request):
 def logout(request):
     try:
         request.user.auth_token.delete()
-        return Response({"message": "Logged out successfully"})
-    except AttributeError:
         return Response(
-            {"error": "User is not logged in"}, status=status.HTTP_400_BAD_REQUEST
+            {"message": "Successfully logged out"}, status=status.HTTP_200_OK
         )
+    except AttributeError:
+        return Response({"error": "No token found"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET"])

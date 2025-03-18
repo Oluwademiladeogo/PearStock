@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 from pearmonieServer.models import Products
 from rest_framework import status, viewsets
 from rest_framework.authtoken.models import Token
@@ -83,7 +84,7 @@ def forgot_password(request):
 @verify_otp_docs
 def verify_otp(request):
     otp = request.data.get("otp")
-    valid_otp = True 
+    valid_otp = True
     if valid_otp:
         return Response({"message": "OTP verified"})
     else:
@@ -200,3 +201,13 @@ def home(request):
             pass
 
     return Response({"authenticated": False})
+
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def health_check(request):
+    """
+    Simple endpoint to verify that the API is functioning correctly.
+    Returns a 200 OK response if the server is healthy.
+    """
+    return HttpResponse("OK", status=status.HTTP_200_OK)

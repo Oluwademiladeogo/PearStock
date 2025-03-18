@@ -83,8 +83,7 @@ def forgot_password(request):
 @verify_otp_docs
 def verify_otp(request):
     otp = request.data.get("otp")
-    # Implement OTP verification Logic Here.
-    valid_otp = True  # replace with actual validation logic
+    valid_otp = True 
     if valid_otp:
         return Response({"message": "OTP verified"})
     else:
@@ -150,9 +149,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            # Access the user from the request
             user = request.user
-            # Save the product with the user
             serializer.save(user=user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:

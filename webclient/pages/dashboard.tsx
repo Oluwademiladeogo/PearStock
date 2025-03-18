@@ -5,10 +5,15 @@ import api from "../utils/api";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useRouter } from "next/router";
 
+interface DashboardItem {
+  title: string;
+  description: string;
+}
+
 const Dashboard = () => {
   const router = useRouter();
   const { hydrated, isAuthenticated } = useProtectedRoute();
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<DashboardItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -77,30 +82,61 @@ const Dashboard = () => {
           Overview of your inventory and sales
         </p>
 
-          {Array.isArray(data) ? (
-            data.map((item, index) => (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {Array.isArray(data) ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {data.map((item, index) => (
               <motion.div
                 key={index}
                 whileHover={{ scale: 1.05 }}
-                className="bg-blue-100 p-4 rounded-lg shadow-md"
+                className="bg-gradient-to-r from-blue-400 to-purple-500 text-white p-6 rounded-lg shadow-xl overflow-hidden"
               >
-                <h2 className="text-xl font-semibold mb-2">{item.title}</h2>
-                <p className="text-gray-700">{item.description}</p>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-2xl font-bold">{item.title}</h2>
+                  <svg
+                    className="w-8 h-8 text-blue-100 opacity-75"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    ></path>
+                  </svg>
+                </div>
+                <p className="text-xl font-semibold">{item.description}</p>
+                <div className="absolute bottom-0 right-0 p-4 bg-blue-500 bg-opacity-30 rounded-tl-lg">
+                  <svg
+                    className="w-6 h-6 text-blue-50"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 6.253v13m0-13C10.832 5.477 9.246 4.75 7.5 4.75a4.5 4.5 0 00-4.5 4.5c0 1.789 0.686 3.357 1.884 4.489m13.5 0c1.198-1.132 1.884-2.7 1.884-4.489a4.5 4.5 0 00-4.5-4.5c-1.746 0-3.332.727-4.5 1.548"
+                    ></path>
+                  </svg>
+                </div>
               </motion.div>
-        </div>
-
-            ))
-          ) : (
-            <div className="min-h-screen w-full bg-gray-100 p-6 flex items-center justify-center">
-              <div className="bg-white p-6 rounded-lg shadow text-center w-full">
-                <h1 className="text-3xl font-bold mb-4">No Data Available</h1>
-                <p className="text-gray-600">
-                  There is currently no data to display.
-                </p>
-              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="min-h-screen w-full bg-gray-100 p-6 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-lg shadow text-center w-full">
+              <h1 className="text-3xl font-bold mb-4">No Data Available</h1>
+              <p className="text-gray-600">
+                There is currently no data to display.
+              </p>
             </div>
-          )}
+          </div>
+        )}
       </motion.div>
     </div>
   );

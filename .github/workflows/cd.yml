@@ -80,4 +80,5 @@ jobs:
             -p 3000:3000 \
             -e NEXT_PUBLIC_API_URL="$NEXT_PUBLIC_API_URL" \
             ${{ secrets.DOCKER_HUB_USERNAME }}/webclient:latest
+          echo "Deployment completed successfully!"
           EOF

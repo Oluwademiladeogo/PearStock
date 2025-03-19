@@ -47,16 +47,35 @@ jobs:
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
           BACKEND_SECRET_KEY: ${{ secrets.BACKEND_SECRET_KEY }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          BACKEND_ALLOWED_HOSTS: ${{ secrets.BACKEND_ALLOWED_HOSTS }}
+          BACKEND_CORS_ALLOWED_ORIGINS: ${{ secrets.BACKEND_CORS_ALLOWED_ORIGINS }}
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
           set -e
-          sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/pearstock:latest
-          sudo docker stop pearstock || true
-          sudo docker rm pearstock || true
-          sudo docker run -d --name pearstock -p 2025:2025 \
-            -e NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL \
-            -e BACKEND_SECRET_KEY=$BACKEND_SECRET_KEY \
-            -e DATABASE_URL=$DATABASE_URL \
-            ${{ secrets.DOCKER_HUB_USERNAME }}/pearstock:latest
+          # Pull both images
+          sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/pearserver:latest
+          sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/webclient:latest
+
+          # Stop and remove existing containers
+          sudo docker stop pearserver webclient || true
+          sudo docker rm pearserver webclient || true
+
+          # Create Docker network if it doesn't exist
+          sudo docker network create pearstock-network || true
+
+          # Run backend container
+          sudo docker run -d --name pearserver \
+            --network pearstock-network \
+            -p 8000:8000 \
+            -e SECRET_KEY="$BACKEND_SECRET_KEY" \
+            -e ALLOWED_HOSTS="$BACKEND_ALLOWED_HOSTS" \
+            -e CORS_ALLOWED_ORIGINS="$BACKEND_CORS_ALLOWED_ORIGINS" \
+            ${{ secrets.DOCKER_HUB_USERNAME }}/pearserver:latest
+
+          # Run frontend container
+          sudo docker run -d --name webclient \
+            --network pearstock-network \
+            -p 3000:3000 \
+            -e NEXT_PUBLIC_API_URL="$NEXT_PUBLIC_API_URL" \
+            ${{ secrets.DOCKER_HUB_USERNAME }}/webclient:latest
           EOF

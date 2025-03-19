@@ -5,3 +5,5 @@ django-phonenumber-field==7.3.0
 phonenumbers==8.13.33
 drf-yasg==1.21.7
 python-dotenv==1.0.1
+pytest
+pytest-django

@@ -4,6 +4,8 @@ import * as Yup from "yup";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 const loginpic = "";
 
 const SignupSchema = Yup.object().shape({
@@ -29,6 +31,7 @@ const SignupSchema = Yup.object().shape({
 });
 
 const Signup: React.FC = () => {
+  const router = useRouter();
   const [serverError, setServerError] = useState("");
 
   return (
@@ -67,11 +70,19 @@ const Signup: React.FC = () => {
                   password: values.password,
                 }
               );
-              console.log(response.data);
-              // Handle successful signup
+
+              const { token, user } = response.data;
+              // Set token and user data in cookies
+              Cookies.set("token", token, { expires: 7 }); // Expires in 7 days
+              Cookies.set("user", JSON.stringify(user), { expires: 7 });
+              router.push("/dashboard");
             } catch (error: any) {
               setServerError(
-                error.response?.data?.error || "An error occurred during signup"
+                error.response?.data?.errors?.[
+                  Object.keys(error.response?.data?.errors)[0]
+                ] ||
+                  error.response?.data?.error ||
+                  "An error occurred during signup"
               );
             } finally {
               setSubmitting(false);

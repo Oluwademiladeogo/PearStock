@@ -4,6 +4,9 @@ import * as Yup from "yup";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
+
 const loginpic = "";
 
 const LoginSchema = Yup.object().shape({
@@ -24,6 +27,7 @@ const LoginSchema = Yup.object().shape({
 });
 
 const Login: React.FC = () => {
+  const router = useRouter();
   const [serverError, setServerError] = useState("");
 
   return (
@@ -35,6 +39,8 @@ const Login: React.FC = () => {
           className="rounded-lg max-w-full md:max-w-md lg:max-w-lg"
         />
       </div>
+
+      {/* Login Form */}
       <div className="w-full md:w-2/3 lg:w-1/3 bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold mb-4">
           Welcome{" "}
@@ -59,13 +65,22 @@ const Login: React.FC = () => {
             try {
               const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/login/`,
-                values
+                {
+                  email: values.email,
+                  password: values.password,
+                }
               );
-              console.log(response.data);
-              // Handle successful login
+
+              const { token, user } = response.data;
+
+              // Set token and user data in cookies
+              Cookies.set("token", token, { expires: 7 }); // Expires in 7 days
+              Cookies.set("user", JSON.stringify(user), { expires: 7 });
+
+              router.push("/dashboard");
             } catch (error: any) {
               setServerError(
-                error.response?.data?.error || "An error occurred during login"
+                error.response?.data?.error || "Invalid credentials"
               );
             } finally {
               setSubmitting(false);
@@ -74,6 +89,7 @@ const Login: React.FC = () => {
         >
           {({ errors, touched, isSubmitting }) => (
             <Form>
+              {/* Email Field */}
               <div className="mb-4">
                 <label
                   htmlFor="email"
@@ -151,12 +167,14 @@ const Login: React.FC = () => {
             </Form>
           )}
         </Formik>
-        <Link
-          href="/forgot-password"
-          className="block text-right mt-4 text-sm text-blue-600 hover:underline"
-        >
-          Forgot Password?
-        </Link>
+
+        {/* Signup Link */}
+        <p className="text-center mt-4">
+          Don't have an account?{" "}
+          <Link href="/signup" className="text-blue-600 hover:underline">
+            Sign up here
+          </Link>
+        </p>
       </div>
     </div>
   );

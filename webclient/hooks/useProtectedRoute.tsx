@@ -14,7 +14,10 @@ export const useProtectedRoute = () => {
     const token = Cookies.get("token");
     setIsAuthenticated(!!token); // Check if token exists
 
-    if (!token && (router.pathname === "/dashboard" || router.pathname === "/products")) {
+    if (
+      !token &&
+      (router.pathname === "/dashboard" || router.pathname === "/products")
+    ) {
       router.push("/login");
     }
   }, [router.pathname]);

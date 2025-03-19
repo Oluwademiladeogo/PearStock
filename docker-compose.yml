@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  pearserver:
+    build: ./pearserver
+    container_name: pearserver
+    ports:
+      - "8000:8000" 
+
+  webclient:
+    build: ./webclient
+    container_name: webclient
+    ports:
+      - "3000:3000" 
+    depends_on:
+      - pearserver

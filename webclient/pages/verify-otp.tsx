@@ -9,9 +9,12 @@ const VerifyOtp: React.FC = () => {
   const handleOTPVerification = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/verify-otp/`, {
-        otp,
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/verify-otp/`,
+        {
+          otp,
+        },
+      );
       console.log(response.data);
       // Handle successful verification
     } catch (error) {

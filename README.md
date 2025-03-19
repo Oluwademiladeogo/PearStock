@@ -59,6 +59,6 @@ To set up the development environment for PearStock, follow these steps:
 
 For any inquiries or support, please contact:
 
-- **Oluwademiladeogo** - [Email](mailto:bickerstethdemilade@gmail.com)
+- **Oluwademiladeogo** - [bickerstethdemilade@gmail.com](mailto:bickerstethdemilade@gmail.com)
 
 We hope you find PearStock helpful for managing your inventory. Happy coding!

@@ -15,7 +15,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "default-secret-key")
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 # Allowed Hosts
-ALLOWED_HOSTS ="*"
+ALLOWED_HOSTS =["localhost"]
 
 # Installed Apps
 INSTALLED_APPS = [

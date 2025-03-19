@@ -7,8 +7,9 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 
-const loginpic = "";
+const loginpic = ""; // Path for login illustration image
 
+// Define validation schema for login form
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address")
@@ -20,7 +21,7 @@ const LoginSchema = Yup.object().shape({
     .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
     .matches(
       /[!@#$%^&*(),.?":{}|<>]/,
-      "Password must contain at least one special character"
+      "Password must contain at least one special character",
     )
     .required("Password is required"),
   rememberMe: Yup.boolean(),
@@ -32,6 +33,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-screen items-center justify-center bg-gray-100 p-4">
+      {/* Left side image for larger screens */}
       <div className="hidden md:flex md:justify-center md:items-center md:w-auto lg:w-auto md:mr-8">
         <Image
           src={loginpic}
@@ -39,7 +41,6 @@ const Login: React.FC = () => {
           className="rounded-lg max-w-full md:max-w-md lg:max-w-lg"
         />
       </div>
-
       {/* Login Form */}
       <div className="w-full md:w-2/3 lg:w-1/3 bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold mb-4">
@@ -54,6 +55,7 @@ const Login: React.FC = () => {
             {serverError}
           </div>
         )}
+        {/* Formik handles form state and validation */}
         <Formik
           initialValues={{
             email: "",
@@ -68,19 +70,16 @@ const Login: React.FC = () => {
                 {
                   email: values.email,
                   password: values.password,
-                }
+                },
               );
-
               const { token, user } = response.data;
-
-              // Set token and user data in cookies
-              Cookies.set("token", token, { expires: 7 }); // Expires in 7 days
+              // Store authentication data in cookies
+              Cookies.set("token", token, { expires: 7 });
               Cookies.set("user", JSON.stringify(user), { expires: 7 });
-
               router.push("/dashboard");
             } catch (error: any) {
               setServerError(
-                error.response?.data?.error || "Invalid credentials"
+                error.response?.data?.error || "Invalid credentials",
               );
             } finally {
               setSubmitting(false);
@@ -113,7 +112,7 @@ const Login: React.FC = () => {
                   </div>
                 )}
               </div>
-
+              {/* Password Field */}
               <div className="mb-4">
                 <label
                   htmlFor="password"
@@ -137,7 +136,7 @@ const Login: React.FC = () => {
                   </div>
                 )}
               </div>
-
+              {/* Remember Me Checkbox */}
               <div className="flex items-center mb-4">
                 <Field
                   type="checkbox"
@@ -152,7 +151,6 @@ const Login: React.FC = () => {
                   Remember Me
                 </label>
               </div>
-
               <button
                 type="submit"
                 disabled={isSubmitting}
@@ -167,8 +165,7 @@ const Login: React.FC = () => {
             </Form>
           )}
         </Formik>
-
-        {/* Signup Link */}
+        {/* Link to Signup Page */}
         <p className="text-center mt-4">
           Don't have an account?{" "}
           <Link href="/signup" className="text-blue-600 hover:underline">

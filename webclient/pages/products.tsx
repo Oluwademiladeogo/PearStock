@@ -5,6 +5,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import api from "../utils/api";
 import Cookies from "js-cookie";
 
+// Define interfaces for product data and filter options
 interface Product {
   id: number;
   name: string;
@@ -24,18 +25,19 @@ interface FilterOptions {
 const Products: React.FC = () => {
   const router = useRouter();
   const { hydrated, isAuthenticated } = useProtectedRoute();
-
   const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]); // New state for filtered products
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 10;
 
-  // New state variables
+  // Modal state variables
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
+
+  // New product and edit product state
   const [newProduct, setNewProduct] = useState<Partial<Product>>({});
   const [editProduct, setEditProduct] = useState<Partial<Product>>({});
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
@@ -46,24 +48,25 @@ const Products: React.FC = () => {
   const [availableStores, setAvailableStores] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Fetch products data on mount if authenticated
   useEffect(() => {
     let isMounted = true;
-
     const fetchProducts = async () => {
       setIsLoading(true);
       try {
-        const response = await api.get("/api/products/"); // Fetch all products without search params
+        const response = await api.get("/api/products/");
         if (isMounted) {
           const productData = response.data;
           setProducts(Array.isArray(productData) ? productData : []);
-          setFilteredProducts(Array.isArray(productData) ? productData : []); // Initialize filtered products with all products
-
-          // Extract unique types and stores for filters
+          setFilteredProducts(Array.isArray(productData) ? productData : []);
+          // Extract unique types and stores for filter options
           if (Array.isArray(productData)) {
-            const types = [...new Set(productData.map((p) => p.type))];
-            const stores = [...new Set(productData.map((p) => p.store))];
-            setAvailableTypes(types);
-            setAvailableStores(stores);
+            setAvailableTypes([
+              ...new Set(productData.map((p: Product) => p.type)),
+            ]);
+            setAvailableStores([
+              ...new Set(productData.map((p: Product) => p.store)),
+            ]);
           }
         }
       } catch (error) {
@@ -76,42 +79,34 @@ const Products: React.FC = () => {
     if (isAuthenticated) {
       fetchProducts();
     }
-
     return () => {
       isMounted = false;
     };
   }, [isAuthenticated]);
 
-  // Apply filters and search
+  // Apply search and filter logic whenever search or filterOptions update
   useEffect(() => {
     let tempProducts = [...products];
-
-    // Apply search filter
     if (search) {
       tempProducts = tempProducts.filter((product) =>
-        product.name.toLowerCase().includes(search.toLowerCase())
+        product.name.toLowerCase().includes(search.toLowerCase()),
       );
     }
-
-    // Apply type filter
     if (filterOptions.type) {
       tempProducts = tempProducts.filter(
-        (product) => product.type === filterOptions.type
+        (product) => product.type === filterOptions.type,
       );
     }
-
-    // Apply store filter
     if (filterOptions.store) {
       tempProducts = tempProducts.filter(
-        (product) => product.store === filterOptions.store
+        (product) => product.store === filterOptions.store,
       );
     }
-
     setFilteredProducts(tempProducts);
-    setCurrentPage(1); // Reset to the first page after filtering
+    setCurrentPage(1); // Reset pagination on filtering change
   }, [search, filterOptions, products]);
 
-  // Get selected product
+  // Set product data for editing when one product is selected
   useEffect(() => {
     if (selectedProducts.length === 1) {
       const selected = products.find((p) => p.id === selectedProducts[0]);
@@ -121,6 +116,7 @@ const Products: React.FC = () => {
     }
   }, [selectedProducts, products]);
 
+  // Redirect to login if unauthenticated
   if (!hydrated) return <LoadingSpinner />;
   if (!isAuthenticated) {
     router.replace("/login");
@@ -135,7 +131,7 @@ const Products: React.FC = () => {
     setSelectedProducts((prev) =>
       prev.includes(id)
         ? prev.filter((productId) => productId !== id)
-        : [...prev, id]
+        : [...prev, id],
     );
   };
 
@@ -147,13 +143,13 @@ const Products: React.FC = () => {
     setIsLoading(true);
     try {
       await Promise.all(
-        selectedProducts.map((id) => api.delete(`/api/products/${id}/`))
+        selectedProducts.map((id) => api.delete(`/api/products/${id}/`)),
       );
       setProducts((prev) =>
-        prev.filter((product) => !selectedProducts.includes(product.id))
+        prev.filter((product) => !selectedProducts.includes(product.id)),
       );
       setFilteredProducts((prev) =>
-        prev.filter((product) => !selectedProducts.includes(product.id))
+        prev.filter((product) => !selectedProducts.includes(product.id)),
       );
       setSelectedProducts([]);
     } catch (error) {
@@ -226,27 +222,25 @@ const Products: React.FC = () => {
     try {
       const response = await api.put(
         `/api/products/${editProduct.id}/`,
-        editProduct
+        editProduct,
       );
       const updatedProduct = response.data;
 
       setProducts((prevProducts) =>
         prevProducts.map((p) =>
-          p.id === updatedProduct.id ? updatedProduct : p
-        )
+          p.id === updatedProduct.id ? updatedProduct : p,
+        ),
       );
       setFilteredProducts((prevFilteredProducts) =>
         prevFilteredProducts.map((p) =>
-          p.id === updatedProduct.id ? updatedProduct : p
-        )
+          p.id === updatedProduct.id ? updatedProduct : p,
+        ),
       );
       setShowEditModal(false);
       setSelectedProducts([]);
     } catch (error) {
-      console.error("Error updating product:", error);
-      alert(
-        "Failed to update product. Please check your inputs and try again."
-      );
+      console.error("Error deleting products:", error);
+      alert("Failed to delete some products. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -268,7 +262,7 @@ const Products: React.FC = () => {
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(
     indexOfFirstProduct,
-    indexOfLastProduct
+    indexOfLastProduct,
   );
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
@@ -356,6 +350,7 @@ const Products: React.FC = () => {
         ) : null}
       </div>
 
+      {/* Products Table or Loading */}
       {isLoading ? (
         <div className="max-w-6xl mx-auto mt-6 flex justify-center py-10">
           <LoadingSpinner />
@@ -372,7 +367,7 @@ const Products: React.FC = () => {
                       setSelectedProducts(
                         e.target.checked
                           ? products.map((product) => product.id)
-                          : []
+                          : [],
                       )
                     }
                     checked={

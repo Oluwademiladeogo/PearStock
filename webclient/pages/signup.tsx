@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 const loginpic = "";
 
+// Define validation schema for the signup form
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
     .matches(/^[a-zA-Z\s]{2,30}$/, "Name must contain only letters and spaces")
@@ -22,7 +23,7 @@ const SignupSchema = Yup.object().shape({
     .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
     .matches(
       /[!@#$%^&*(),.?":{}|<>]/,
-      "Password must contain at least one special character"
+      "Password must contain at least one special character",
     )
     .required("Password is required"),
   confirmPassword: Yup.string()
@@ -36,6 +37,7 @@ const Signup: React.FC = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-screen items-center justify-center bg-gray-100 p-4">
+      {/* Left side image for larger screens */}
       <div className="hidden md:flex md:justify-center md:items-center md:w-auto lg:w-auto md:mr-8">
         <Image
           src={loginpic}
@@ -48,6 +50,7 @@ const Signup: React.FC = () => {
         <h1 className="text-2xl font-bold mb-4">Create Account</h1>
         <p className="mb-6">Please fill in your details</p>
         {serverError && (
+          // Display server error message if signup fails
           <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
             {serverError}
           </div>
@@ -60,6 +63,7 @@ const Signup: React.FC = () => {
             confirmPassword: "",
           }}
           validationSchema={SignupSchema}
+          // Handle form submission and communicate with the signup API endpoint
           onSubmit={async (values, { setSubmitting }) => {
             try {
               const response = await axios.post(
@@ -68,21 +72,22 @@ const Signup: React.FC = () => {
                   name: values.name,
                   email: values.email,
                   password: values.password,
-                }
+                },
               );
 
               const { token, user } = response.data;
-              // Set token and user data in cookies
-              Cookies.set("token", token, { expires: 7 }); // Expires in 7 days
+              // Set token and user data in cookies with an expiration of 7 days
+              Cookies.set("token", token, { expires: 7 });
               Cookies.set("user", JSON.stringify(user), { expires: 7 });
               router.push("/dashboard");
             } catch (error: any) {
+              // Set error from the API response or fallback error message
               setServerError(
                 error.response?.data?.errors?.[
                   Object.keys(error.response?.data?.errors)[0]
                 ] ||
                   error.response?.data?.error ||
-                  "An error occurred during signup"
+                  "An error occurred during signup",
               );
             } finally {
               setSubmitting(false);

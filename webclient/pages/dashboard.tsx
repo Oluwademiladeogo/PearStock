@@ -12,20 +12,21 @@ interface DashboardItem {
 
 const Dashboard = () => {
   const router = useRouter();
+  // Custom hook to handle authentication and hydration state
   const { hydrated, isAuthenticated } = useProtectedRoute();
   const [data, setData] = useState<DashboardItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch dashboard data when component mounts and user is authenticated
   useEffect(() => {
     let isMounted = true;
-
     const fetchData = async () => {
       try {
         setIsLoading(true);
         const response = await api.get("/api/dashboard/");
         if (isMounted) {
-          setData(response.data);
+          setData(response.data); // Store the fetched dashboard items
         }
         setError(null);
       } catch (err: any) {
@@ -38,26 +39,27 @@ const Dashboard = () => {
         }
       }
     };
-
     fetchData();
     return () => {
-      isMounted = false;
+      isMounted = false; // Cleanup flag on unmount
     };
   }, [isAuthenticated]);
 
+  // Wait until hydration is completed
   if (!hydrated) {
     return <LoadingSpinner />;
   }
 
+  // Redirect unauthenticated users to login
   if (!isAuthenticated) {
     router.replace("/login");
     return null;
   }
 
+  // Display spinner or error message if necessary
   if (isLoading) {
     return <LoadingSpinner />;
   }
-
   if (error) {
     return (
       <div className="min-h-screen bg-gray-100 p-6">
@@ -108,26 +110,11 @@ const Dashboard = () => {
                   </svg>
                 </div>
                 <p className="text-xl font-semibold">{item.description}</p>
-                <div className="absolute bottom-0 right-0 p-4 bg-blue-500 bg-opacity-30 rounded-tl-lg">
-                  <svg
-                    className="w-6 h-6 text-blue-50"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 6.253v13m0-13C10.832 5.477 9.246 4.75 7.5 4.75a4.5 4.5 0 00-4.5 4.5c0 1.789 0.686 3.357 1.884 4.489m13.5 0c1.198-1.132 1.884-2.7 1.884-4.489a4.5 4.5 0 00-4.5-4.5c-1.746 0-3.332.727-4.5 1.548"
-                    ></path>
-                  </svg>
-                </div>
               </motion.div>
             ))}
           </div>
         ) : (
+          // Message for empty dashboard data
           <div className="min-h-screen w-full bg-gray-100 p-6 flex items-center justify-center">
             <div className="bg-white p-6 rounded-lg shadow text-center w-full">
               <h1 className="text-3xl font-bold mb-4">No Data Available</h1>

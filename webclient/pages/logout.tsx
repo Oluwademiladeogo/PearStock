@@ -15,18 +15,20 @@ const Logout = () => {
   }, [router]);
 
   return (
-    <div style={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      height: '100vh', 
-      fontSize: '2em', 
-      fontWeight: 'bold',
-      color: '#333' 
-    }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        fontSize: "2em",
+        fontWeight: "bold",
+        color: "#333",
+      }}
+    >
       Logging out...
     </div>
-  )
+  );
 };
 
 export default Logout;

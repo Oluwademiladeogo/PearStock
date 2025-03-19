@@ -1,26 +1,27 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 const loginpic = "/loginpic.png";
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleForgotPassword = async (e: React.FormEvent) => {
+  // Handle forgot password form submission
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
+      // Call API to request password reset
+      await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/forgot-password/`,
         {
           email,
-        }
+        },
       );
-      console.log(response.data);
-      // Handle successful submission
+      setMessage("Reset instructions have been sent to your email.");
     } catch (error) {
-      console.error(error);
-      // Handle error
+      setMessage("Error sending reset instructions.");
     }
   };
 
@@ -37,7 +38,7 @@ const ForgotPassword: React.FC = () => {
       <div className="w-full md:w-2/3 lg:w-1/3 bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold mb-4">Forgot Password</h1>
         <p className="mb-6">Enter your email to reset your password</p>
-        <form onSubmit={handleForgotPassword}>
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               htmlFor="email"

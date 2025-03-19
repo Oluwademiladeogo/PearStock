@@ -136,6 +136,3 @@ If you encounter any issues not covered here, please contact me or create an iss
 ---
 
 Built with 💙 by Demilade.
-
-[Back to Top](#pearmobile)
-```

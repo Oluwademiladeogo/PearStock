@@ -25,6 +25,7 @@ jobs:
 
       - name: Build and Push Docker Images with Docker Compose
         env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
           BACKEND_ALLOWED_HOSTS: ${{secrets.BACKEND_ALLOWED_HOSTS}}
           BACKEND_SECRET_KEY: ${{ secrets.BACKEND_SECRET_KEY }}
@@ -45,6 +46,7 @@ jobs:
 
       - name: Deploy to server
         env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
           BACKEND_SECRET_KEY: ${{ secrets.BACKEND_SECRET_KEY }}
           BACKEND_ALLOWED_HOSTS: ${{ secrets.BACKEND_ALLOWED_HOSTS }}

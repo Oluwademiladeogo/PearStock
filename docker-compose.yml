@@ -3,7 +3,7 @@ version: "3.8"
 services:
   pearserver:
     build: ./pearserver
-    image: pearstock/pearserver:latest
+    image: ${{ secrets.DOCKER_HUB_USERNAME }}/pearserver:latest
     container_name: pearserver
     ports:
       - "8000:8000"
@@ -14,7 +14,7 @@ services:
 
   webclient:
     build: ./webclient
-    image: pearstock/webclient:latest
+    image: ${{ secrets.DOCKER_HUB_USERNAME }}/webclient:latest
     container_name: webclient
     ports:
       - "3000:3000"

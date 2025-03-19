@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-const loginpic = "";
+const loginpic = "/loginpic.png";
 
 // Define validation schema for the signup form
 const SignupSchema = Yup.object().shape({
@@ -42,6 +42,8 @@ const Signup: React.FC = () => {
         <Image
           src={loginpic}
           alt="Signup"
+          width={600}
+          height={400}
           className="rounded-lg"
           style={{ maxWidth: "500px" }}
         />

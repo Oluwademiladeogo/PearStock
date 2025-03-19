@@ -7,7 +7,7 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 
-const loginpic = ""; // Path for login illustration image
+const loginpic = "/loginpic.png"; // Path for login illustration image
 
 // Define validation schema for login form
 const LoginSchema = Yup.object().shape({
@@ -21,7 +21,7 @@ const LoginSchema = Yup.object().shape({
     .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
     .matches(
       /[!@#$%^&*(),.?":{}|<>]/,
-      "Password must contain at least one special character",
+      "Password must contain at least one special character"
     )
     .required("Password is required"),
   rememberMe: Yup.boolean(),
@@ -38,6 +38,8 @@ const Login: React.FC = () => {
         <Image
           src={loginpic}
           alt="Login"
+          width={600}
+          height={400}
           className="rounded-lg max-w-full md:max-w-md lg:max-w-lg"
         />
       </div>
@@ -70,7 +72,7 @@ const Login: React.FC = () => {
                 {
                   email: values.email,
                   password: values.password,
-                },
+                }
               );
               const { token, user } = response.data;
               // Store authentication data in cookies
@@ -79,7 +81,7 @@ const Login: React.FC = () => {
               router.push("/dashboard");
             } catch (error: any) {
               setServerError(
-                error.response?.data?.error || "Invalid credentials",
+                error.response?.data?.error || "Invalid credentials"
               );
             } finally {
               setSubmitting(false);

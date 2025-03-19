@@ -15,7 +15,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "default-secret-key")
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 # Allowed Hosts
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
+ALLOWED_HOSTS ="*"
 
 # Installed Apps
 INSTALLED_APPS = [
@@ -87,9 +87,7 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = "pearmonieServer.CustomUser"
 
 # CORS Configuration
-CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:3000").split(
-    ","
-)
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 # Internationalization

@@ -17,23 +17,21 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
-      - name: Build Docker images
-        run: |
-          docker build -t pearstock:latest .
-
-      - name: "Tag Docker Images"
-        run: |
-         docker tag pearstock:latest ${{ secrets.DOCKER_HUB_USERNAME }}/pearstock:latest
-
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3 
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      - name: "Push to Docker Hub"
+      - name: Build and Push Docker Images with Docker Compose
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          BACKEND_ALLOWED_HOSTS: ${{secrets.BACKEND_ALLOWED_HOSTS}}
+          BACKEND_SECRET_KEY: ${{ secrets.BACKEND_SECRET_KEY }}
+          BACKEND_CORS_ALLOWED_ORIGINS: ${{secrets.BACKEND_CORS_ALLOWED_ORIGINS}}
         run: |
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/pearstock:latest
+          docker compose -f docker-compose.yml build
+          docker compose -f docker-compose.yml push
 
       - name: Add SSH private key
         run: |
@@ -46,11 +44,19 @@ jobs:
           ssh-keyscan -t rsa ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy to server
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          BACKEND_SECRET_KEY: ${{ secrets.BACKEND_SECRET_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
           set -e
           sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/pearstock:latest
           sudo docker stop pearstock || true
           sudo docker rm pearstock || true
-          sudo docker run -d --name pearstock -p 2025:2025 ${{ secrets.DOCKER_HUB_USERNAME }}/pearstock:latest
+          sudo docker run -d --name pearstock -p 2025:2025 \
+            -e NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL \
+            -e BACKEND_SECRET_KEY=$BACKEND_SECRET_KEY \
+            -e DATABASE_URL=$DATABASE_URL \
+            ${{ secrets.DOCKER_HUB_USERNAME }}/pearstock:latest
           EOF

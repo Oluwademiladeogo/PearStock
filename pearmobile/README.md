@@ -131,7 +131,7 @@ Then open the iOS project in Xcode to archive and distribute.
 
 ## Getting Help
 
-If you encounter any issues not covered here, please contact me or create an issue in the GitHub repository.
+If you encounter any issues not covered here, please contact me or create an issue in the GitHub repository
 
 ---
 

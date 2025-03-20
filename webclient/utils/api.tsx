@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 
 // Creates an Axios instance with base URL and default headers
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: "44.204.152.96",
   headers: {
     "Content-Type": "application/json",
   },

@@ -10,6 +10,7 @@ jobs:
   deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -23,62 +24,64 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      - name: Build and Push Docker Images with Docker Compose
+      # 1. Build and push images once
+      - name: Build and Push Docker Images
         env:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-          BACKEND_ALLOWED_HOSTS: ${{secrets.BACKEND_ALLOWED_HOSTS}}
-          BACKEND_SECRET_KEY: ${{ secrets.BACKEND_SECRET_KEY }}
-          BACKEND_CORS_ALLOWED_ORIGINS: ${{secrets.BACKEND_CORS_ALLOWED_ORIGINS}}
         run: |
           docker compose -f docker-compose.yml build
           docker compose -f docker-compose.yml push
 
-      - name: Add SSH private key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-      - name: Add SSH known hosts
-        run: |
-          ssh-keyscan -t rsa ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Deploy to server
+      # 2. Deploy backend on HOST A (EC2 instance #1)
+      - name: Deploy Backend
         env:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          BACKEND_SSH_USER: ${{ secrets.BACKEND_SSH_USER }}
+          BACKEND_SSH_HOST: ${{ secrets.BACKEND_SSH_HOST }}
           BACKEND_SECRET_KEY: ${{ secrets.BACKEND_SECRET_KEY }}
           BACKEND_ALLOWED_HOSTS: ${{ secrets.BACKEND_ALLOWED_HOSTS }}
           BACKEND_CORS_ALLOWED_ORIGINS: ${{ secrets.BACKEND_CORS_ALLOWED_ORIGINS }}
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-          set -e
-          # Pull both images
-          sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/pearserver:latest
-          sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/webclient:latest
+          # Provide different SSH key for backend if needed
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > backend_key
+          chmod 600 backend_key
+          ssh -i backend_key -o StrictHostKeyChecking=no $BACKEND_SSH_USER@$BACKEND_SSH_HOST << 'EOF'
+            set -e
+            sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/pearserver:latest
+            sudo docker stop pearserver || true
+            sudo docker rm pearserver || true
+            sudo docker network create pearstock-network || true
+            sudo docker run -d --name pearserver \
+              --network pearstock-network \
+              -p 8000:8000 \
+              -e SECRET_KEY="$BACKEND_SECRET_KEY" \
+              -e ALLOWED_HOSTS="$BACKEND_ALLOWED_HOSTS" \
+              -e CORS_ALLOWED_ORIGINS="$BACKEND_CORS_ALLOWED_ORIGINS" \
+              ${{ secrets.DOCKER_HUB_USERNAME }}/pearserver:latest
+            echo "Backend deployment completed successfully!"
+          EOF
 
-          # Stop and remove existing containers
-          sudo docker stop pearserver webclient || true
-          sudo docker rm pearserver webclient || true
-
-          # Create Docker network if it doesn't exist
-          sudo docker network create pearstock-network || true
-
-          # Run backend container
-          sudo docker run -d --name pearserver \
-            --network pearstock-network \
-            -p 8000:8000 \
-            -e SECRET_KEY="$BACKEND_SECRET_KEY" \
-            -e ALLOWED_HOSTS="$BACKEND_ALLOWED_HOSTS" \
-            -e CORS_ALLOWED_ORIGINS="$BACKEND_CORS_ALLOWED_ORIGINS" \
-            ${{ secrets.DOCKER_HUB_USERNAME }}/pearserver:latest
-
-          # Run frontend container
-          sudo docker run -d --name webclient \
-            --network pearstock-network \
-            -p 3000:3000 \
-            -e NEXT_PUBLIC_API_URL="$NEXT_PUBLIC_API_URL" \
-            ${{ secrets.DOCKER_HUB_USERNAME }}/webclient:latest
-          echo "Deployment completed successfully!"
+      # 3. Deploy frontend on HOST B (EC2 instance #2)
+      - name: Deploy Frontend
+        env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          FRONTEND_SSH_USER: ${{ secrets.FRONTEND_SSH_USER }}
+          FRONTEND_SSH_HOST: ${{ secrets.FRONTEND_SSH_HOST }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+        run: |
+          # Provide different SSH key for frontend if needed
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > frontend_key
+          chmod 600 frontend_key
+          ssh -i frontend_key -o StrictHostKeyChecking=no $FRONTEND_SSH_USER@$FRONTEND_SSH_HOST << 'EOF'
+            set -e
+            sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/webclient:latest
+            sudo docker stop webclient || true
+            sudo docker rm webclient || true
+            sudo docker network create pearstock-network || true
+            sudo docker run -d --name webclient \
+              --network pearstock-network \
+              -p 3000:3000 \
+              -e NEXT_PUBLIC_API_URL="$NEXT_PUBLIC_API_URL" \
+              ${{ secrets.DOCKER_HUB_USERNAME }}/webclient:latest
+            echo "Frontend deployment completed successfully!"
           EOF

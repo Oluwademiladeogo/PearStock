@@ -47,6 +47,8 @@ jobs:
           chmod 600 backend_key
           ssh -i backend_key -o StrictHostKeyChecking=no $BACKEND_SSH_USER@$BACKEND_SSH_HOST << 'EOF'
             set -e
+            sudo docker image prune -f
+            sudo docker system prune -f
             sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/pearserver:latest
             sudo docker stop pearserver || true
             sudo docker rm pearserver || true
@@ -74,6 +76,8 @@ jobs:
           chmod 600 frontend_key
           ssh -i frontend_key -o StrictHostKeyChecking=no $FRONTEND_SSH_USER@$FRONTEND_SSH_HOST << 'EOF'
             set -e
+            sudo docker image prune -f
+            sudo docker system prune -f
             sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/webclient:latest
             sudo docker stop webclient || true
             sudo docker rm webclient || true

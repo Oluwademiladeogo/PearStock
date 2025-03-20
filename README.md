@@ -29,7 +29,6 @@ PearStock leverages the following technologies:
 - **HTML:** (0.9%) Markup language for web pages.
 - **Swift:** (0.4%) Used for building iOS applications.
 - **Dockerfile:** (0.2%) Containerization of applications for development and deployment.
-- **Other:** (0.2%) Additional technologies and dependencies.
 
 ## Installation
 

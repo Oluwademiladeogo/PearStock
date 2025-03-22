@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY", "default-secret-key")
 
 # Debug Mode
-DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
 # Allowed Hosts
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "44.204.152.96").split(",")
@@ -97,7 +97,6 @@ USE_TZ = True
 
 # Static Files
 STATIC_URL = "static/"
-
 # Default Primary Key Field Type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

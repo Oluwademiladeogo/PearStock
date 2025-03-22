@@ -28,6 +28,8 @@ const VerifyOtp: React.FC = () => {
       <div className="hidden md:flex md:justify-center md:items-center md:w-auto lg:w-auto md:mr-8">
         <Image
           src={loginpic}
+          width={600}
+          height={400}
           alt="OTP Verification"
           className="rounded-lg"
           style={{ maxWidth: "500px" }}

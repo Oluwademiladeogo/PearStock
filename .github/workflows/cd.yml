@@ -52,9 +52,7 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/pearserver:latest
             sudo docker stop pearserver || true
             sudo docker rm pearserver || true
-            sudo docker network create pearstock-network || true
             sudo docker run -d --name pearserver \
-              --network pearstock-network \
               -p 8000:8000 \
               -e SECRET_KEY="$BACKEND_SECRET_KEY" \
               -e ALLOWED_HOSTS="$BACKEND_ALLOWED_HOSTS" \
@@ -81,9 +79,7 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/webclient:latest
             sudo docker stop webclient || true
             sudo docker rm webclient || true
-            sudo docker network create pearstock-network || true
             sudo docker run -d --name webclient \
-              --network pearstock-network \
               -p 3000:3000 \
               -e NEXT_PUBLIC_API_URL="$NEXT_PUBLIC_API_URL" \
               ${{ secrets.DOCKER_HUB_USERNAME }}/webclient:latest

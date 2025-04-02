@@ -31,6 +31,8 @@ const ForgotPassword: React.FC = () => {
         <Image
           src={loginpic}
           alt="Forgot Password"
+          width={600}
+          height={400}
           className="rounded-lg"
           style={{ maxWidth: "500px" }}
         />

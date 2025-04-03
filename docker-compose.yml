@@ -11,7 +11,10 @@ services:
       CORS_ALLOWED_ORIGINS: ${BACKEND_CORS_ALLOWED_ORIGINS}
 
   webclient:
-    build: ./webclient
+    build:
+      context: ./webclient
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     image: ${DOCKER_HUB_USERNAME}/webclient:latest
     container_name: webclient
     ports:

@@ -46,10 +46,9 @@ jobs:
           BACKEND_ALLOWED_HOSTS: ${{ secrets.BACKEND_ALLOWED_HOSTS }}
           BACKEND_CORS_ALLOWED_ORIGINS: ${{ secrets.BACKEND_CORS_ALLOWED_ORIGINS }}
         run: |
-          # Provide different SSH key for backend if needed
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > backend_key
           chmod 600 backend_key
-          ssh -i backend_key -o StrictHostKeyChecking=no $BACKEND_SSH_USER@$BACKEND_SSH_HOST << 'EOF'
+          ssh -i backend_key -o StrictHostKeyChecking=no $BACKEND_SSH_USER@$BACKEND_SSH_HOST <<EOF
             set -e
             sudo docker image prune -f
             sudo docker system prune -f
@@ -58,9 +57,9 @@ jobs:
             sudo docker rm pearserver || true
             sudo docker run -d --name pearserver \
               -p 8000:8000 \
-              -e SECRET_KEY="$BACKEND_SECRET_KEY" \
-              -e ALLOWED_HOSTS="$BACKEND_ALLOWED_HOSTS" \
-              -e CORS_ALLOWED_ORIGINS="$BACKEND_CORS_ALLOWED_ORIGINS" \
+              -e SECRET_KEY="${BACKEND_SECRET_KEY}" \
+              -e ALLOWED_HOSTS="${BACKEND_ALLOWED_HOSTS}" \
+              -e CORS_ALLOWED_ORIGINS="${BACKEND_CORS_ALLOWED_ORIGINS}" \
               ${{ secrets.DOCKER_HUB_USERNAME }}/pearserver:latest
             echo "Backend deployment completed successfully!"
           EOF
@@ -73,7 +72,6 @@ jobs:
           FRONTEND_SSH_HOST: ${{ secrets.FRONTEND_SSH_HOST }}
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
         run: |
-          # Provide different SSH key for frontend if needed
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > frontend_key
           chmod 600 frontend_key
           ssh -i frontend_key -o StrictHostKeyChecking=no $FRONTEND_SSH_USER@$FRONTEND_SSH_HOST << 'EOF'
